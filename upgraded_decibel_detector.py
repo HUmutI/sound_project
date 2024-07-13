@@ -13,6 +13,7 @@ rms = 1
 total_time = 0
 interval = 0.3
 last_check = time.time()
+paused = False
 
 def callback(in_data, frame_count, time_info, status):
     global rms
@@ -29,20 +30,30 @@ stream = p.open(format=p.get_format_from_width(WIDTH),
 
 stream.start_stream()
 
-while stream.is_active():
-    current_time = time.time()
-    if current_time - last_check >= interval:
-        db = 20 * log10(rms + 0.0000001)
-        print(f"DB: {db}")
-        total_time += interval
-        last_check = current_time
-        
-        if db > 52:
-            record_var = f"at the time {round(total_time, 3)} sec and the recorded decibel is {round(db, 3)} dB"
-            detect_list.append(record_var)
+print("Press 'p' to pause/resume the recording, 'q' to quit.")
 
-    # Check if "p" key is pressed to stop the script
+while stream.is_active():
+    if not paused:
+        current_time = time.time()
+        if current_time - last_check >= interval:
+            db = 20 * log10(rms + 0.0000001)
+            print(f"DB: {db}")
+            total_time += interval
+            last_check = current_time
+            
+            if db > 52:
+                record_var = f"at the time {round(total_time, 3)} sec and the recorded decibel is {round(db, 3)} dB"
+                detect_list.append(record_var)
+
+    # Check if "p" key is pressed to pause/resume the script
     if keyboard.is_pressed("p"):
+        paused = not paused
+        print("Paused" if paused else "Resumed")
+        time.sleep(0.1)
+
+    # Check if "q" key is pressed to stop the script
+    if keyboard.is_pressed("q"):
+        print("Quitting...")
         break
 
 stream.stop_stream()
