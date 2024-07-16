@@ -1,6 +1,6 @@
-The purpose of this project is detecting the notes when the decibel is over 52 db. 
-The main steps are detecting the times when decibel is over 52, then measuring the frequencies when that time and converting these frequencies into the musical notes.
+This project aims to detect the notes when the decibel is over 52 dB. 
+The main steps are detecting the times when the decibel is over 52, measuring the frequencies when that time, and converting these frequencies into musical notes.
 
 Hüseyin Umut Işık - Emir Şahin
 
-# sound_project
+# Sound_to_note
